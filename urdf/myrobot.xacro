@@ -1,0 +1,340 @@
+<?xml version="1.0"?>
+<robot name="robotic_arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Constants for robot dimensions -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="mass" value="1" /> <!-- arbitrary value for mass -->
+  <xacro:property name="width" value="0.1" /> <!-- Square dimensions (widthxwidth) of beams -->
+  <xacro:property name="height1" value="2" /> <!-- Link 1 -->
+  <xacro:property name="height2" value="1" /> <!-- Link 2 -->
+  <xacro:property name="height3" value="1" /> <!-- Link 3 -->
+  <xacro:property name="camera_link" value="0.05" /> <!-- Size of square 'camera' box -->
+  <xacro:property name="axel_offset" value="0.05" /> <!-- Space btw top of beam and the each joint -->
+    <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  
+    <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+
+    <material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+
+  <material name="blue">
+    <color rgba="0.0 0.0 0.8 1.0"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+
+  <material name="grey">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+
+  <material name="orange">
+    <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
+  </material>
+
+  <material name="brown">
+    <color rgba="${222/255} ${207/255} ${195/255} 1.0"/>
+  </material>
+
+  <material name="red">
+    <color rgba="0.8 0.0 0.0 1.0"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+
+    <!--color-->
+  <xacro:include filename="$(find g3_robot_description)/urdf/myrobot.gazebo" />
+
+  <link name="world"/>
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.115" radius="0.23"/>
+      </geometry>
+      <material name="gold">
+        <color rgba="1 0.84 0 1"/>
+      </material>
+      <origin xyz="0 0 0.0575" rpy="0 0 0"/>
+    </visual>
+  </link>
+    <link name="stand1_link">
+    <visual>
+      <geometry>
+        <box size= "0.115 0.115 0.3"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.17 0.56 1 1"/>
+      </material>
+      <origin xyz="0 0 0.265" rpy="0 0 0"/>
+    </visual>
+  </link>
+
+    <joint name="base_to_stand1" type="continuous">
+      <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="stand1_link"/>
+    <origin xyz="0 0 0"/>
+     </joint>
+
+  <link name="joint1_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.09"/>
+      </geometry>
+      <material name="silver">
+        <color rgba="0.753 0.753 0.753 1"/>
+      </material>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+
+    <joint name="stand1_to_joint1" type="continuous">
+    <parent link="stand1_link"/>
+    <child link="joint1_link"/>
+   <origin xyz="0 0 0.503" rpy="0 0 0"/>
+        <axis xyz="0 1 0" rpy="0 0 0"/>
+        <!--limit lower="-3.1416" upper="3.1416" effort="10" velocity="3"/-->
+      </joint>
+
+<link name="stand2_link">
+    <visual>
+      <geometry>
+        <box size= "0.3 0.115 0.115"/>
+      </geometry>
+      <material name="blue">
+      </material>
+      <origin xyz="0.24 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+
+  <joint name = "wolrd_to_base_link" type = "fixed">
+  <parent link = "world"/>
+  <child link = "base_link"/>
+  <origin xyz = "0 0 0" rpy = "0 0 0"/>
+  </joint>
+
+<joint name="joint1_to_stand2" type="fixed">
+        <parent link="joint1_link"/>
+        <child link="stand2_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+ </joint>
+
+<link name="joint2_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.09"/>
+      </geometry>
+      <material name="silver">
+      </material>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+
+  <joint name="stand2_to_joint2" type="continuous">
+    <parent link="stand2_link"/>
+    <child link="joint2_link"/>
+   <origin xyz="0.48 0 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0" rpy="0 0 0"/>
+        <!--limit lower="-3.1416" upper="3.1416" effort="10" velocity="3"/-->
+      </joint>
+<link name="stand3_link">
+    <visual>
+      <geometry>
+        <box size= "0.3 0.115 0.115"/>
+      </geometry>
+      <material name="blue">
+      </material>
+      <origin xyz="0.24 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+
+<joint name="joint2_to_stand3" type="fixed">
+        <parent link="joint2_link"/>
+        <child link="stand3_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+ </joint>
+
+<link name="joint3_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.09"/>
+      </geometry>
+      <material name="silver">
+      </material>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+
+  <joint name="stand3_to_joint3" type="continuous">
+    <parent link="stand3_link"/>
+    <child link="joint3_link"/>
+   <origin xyz="0.48 0 0" rpy="0 0 0"/>
+        <axis xyz="0 1 0" rpy="0 0 0"/>
+        <!--limit lower="-3.1416" upper="3.1416" effort="10" velocity="3"/-->
+      </joint>
+
+<link name="stand4_link">
+    <visual>
+      <geometry>
+        <box size= "0.3 0.115 0.115"/>
+      </geometry>
+      <material name="blue">
+      </material>
+      <origin xyz="0.24 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+
+<joint name="joint3_to_stand4" type="fixed">
+        <parent link="joint3_link"/>
+        <child link="stand4_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+ </joint>
+
+<!--add link_join camera-->
+
+  <joint name="hokuyo_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.33 0 ${height3 - axel_offset*17.2}" rpy="0 0 0"/>
+    <parent link="stand4_link"/>
+    <child link="hokuyo_link"/>
+  </joint>
+
+  <!-- Hokuyo Laser -->
+  <link name="hokuyo_link">
+    <collision>
+      <origin xyz="0 -0.5 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://g3_robot_description/meshes/hokuyo.dae"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.33 0 ${height3 - axel_offset*18.35}" rpy="0 0 0"/>
+    <parent link="stand4_link"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <!-- generate an optical frame http://www.ros.org/reps/rep-0103.html#suffix-frames
+      so that ros and opencv can operate on the camera frame correctly -->
+  <joint name="camera_optical_joint" type="fixed">
+    <!-- these values have to be these values otherwise the gazebo camera image
+        won't be aligned properly with the frame it is supposedly originating from -->
+    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    <parent link="camera_link"/>
+    <child link="camera_link_optical"/>
+  </joint>
+
+  <link name="camera_link_optical">
+  </link>
+
+ <!--end link join camera-->
+
+   <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_to_stand1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wolrd_to_base_link">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="stand2_to_joint2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint2_to_stand3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor4">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <transmission name="tran5">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="stand3_to_joint3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor5">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+      <transmission name="tran6">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint3_to_stand4">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor6">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+</robot>
